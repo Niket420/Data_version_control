@@ -1,0 +1,4 @@
+[core]
+    remote = storage
+['remote "storage"']
+    url = /Users/niketanand/Documents/MLOps/DVC_CI_CD/storage
