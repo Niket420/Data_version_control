@@ -1,0 +1,18 @@
+version:
+  dataset_version: v1
+  input_data_path: "/Users/niketanand/Documents/MLOps/DVC_CI_CD/CIFAR-10-images-master/"
+  output_data_path: "/Users/niketanand/Documents/MLOps/DVC_CI_CD/CIFAR-10-images-master/output"
+  seed: 400
+
+split_ratio:
+  train: 80
+  test: 10
+  val: 10
+
+parameter:
+  lr: 0.001
+  batch_size: 64
+  num_epochs: 20
+  conv_layers: [32, 64, 128, 256]
+  conv_filters: 3
+  kernel_sizes: 3

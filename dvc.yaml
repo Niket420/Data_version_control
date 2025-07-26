@@ -1,0 +1,53 @@
+stages:
+  pull_data:
+    cmd: /Users/niketanand/Documents/intern_LiquidMind/RAG_with_Reflection_Memory/ragEnv/bin/python3 data_pulling.py
+    deps:
+      - data_pulling.py
+
+  data_preparation:
+    cmd: /Users/niketanand/Documents/intern_LiquidMind/RAG_with_Reflection_Memory/ragEnv/bin/python3 data_preparation.py
+    deps:
+      - split_dataset.py
+      - ${version.input_data_path}
+    outs:
+      - ${version.output_data_path}
+    params:
+      - version.dataset_version
+      - version.seed
+      - split_ratio.train
+      - split_ratio.test
+      - split_ratio.val
+
+  model_tuning:
+    cmd: /Users/niketanand/Documents/intern_LiquidMind/RAG_with_Reflection_Memory/ragEnv/bin/python3 model_tuning.py
+    deps:
+      - model_tuning.py
+      - src/train.py
+      - params.yaml
+      - ${version.output_data_path}/train
+      - ${version.output_data_path}/val
+    params:
+      - version.seed
+      - parameter.lr
+      - parameter.batch_size
+      - parameter.num_epochs
+      - parameter.conv_layers
+      - parameter.kernel_sizes
+    outs:
+      - models/model.pth
+
+  inference:
+    cmd: /Users/niketanand/Documents/intern_LiquidMind/RAG_with_Reflection_Memory/ragEnv/bin/python src/evaluate.py
+    deps:
+      - src/evaluate.py
+      - src/model_tuning.py
+      - params.yaml
+      - models/model.pth
+      - data/processed/test
+    params:
+      - version.seed
+      - parameter.batch_size
+      - parameter.conv_layers
+      - parameter.conv_filters
+      - parameter.kernel_sizes
+    
